@@ -1,41 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
-
-
-    <TextView
-        android:id="@+id/user1_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/user1_message_box"
-        android:text="hi"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/white"
-        android:layout_marginEnd="35dp"
-        />
+    android:paddingBottom="10dp">
 
     <TextView
-        android:id="@+id/user2_txt"
+        android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/user2_message_box"
-        android:text="I commented on Figma, I want to add some fancy icons. Do you have any icon set?"
+        android:padding="6dp"
         android:textColor="@color/white"
-        android:visibility="gone"
-        android:layout_marginStart="35dp"
-        android:layout_alignParentEnd="true"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="08:12" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/user2_img"
-        android:layout_width="wrap_content"
+    <!--   Layout của user chat -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMsgOther"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/user2_message_box"
-        android:src="@drawable/ic_like"
-        android:backgroundTint="#272A35"
         android:visibility="gone"
-        android:layout_marginStart="35dp"
-        android:layout_alignParentEnd="true" />
-</RelativeLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintWidth_percent="0.8">
+
+        <TextView
+            android:id="@+id/tvMsgOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user1_message_box"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="6dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Next month?" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--   Layout của bản thân -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMsgSelf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintWidth_percent="0.8">
+
+        <TextView
+            android:id="@+id/tvMsgSelf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user2_message_box"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="6dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="I am in a process of designing some. When do you need them?" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMsgImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintWidth_percent="0.8">
+
+        <ImageView
+            android:id="@+id/imgMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user2_message_box"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="6dp"
+            android:src="@drawable/ic_like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

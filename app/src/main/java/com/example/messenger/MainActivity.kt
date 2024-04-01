@@ -5,21 +5,36 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.messenger.adapter.ChatBoxAdapter
+import com.example.messenger.conts.Constants
 import com.example.messenger.databinding.ActivityMainBinding
+import com.example.messenger.listener.OnMessageItemListener
+import com.example.messenger.model.Messenger
+import com.example.messenger.model.User
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Random
 
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding get() = requireNotNull(_binding)
-    private val list = arrayListOf<User>()
+    private val list = arrayListOf<Messenger>()
     private val adapter: ChatBoxAdapter by lazy {
-        ChatBoxAdapter(list)
+        ChatBoxAdapter(list, object : OnMessageItemListener {
+            override fun onItemClick(msg: Messenger) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemLongClick(msg: Messenger) {
+                list.remove(msg)
+                adapter.notifyItemRemoved(list.size)
+                adapter.notifyItemRangeChanged(0, list.size)
+            }
+        })
     }
     private val date = Date()
 
@@ -27,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Constants.otherUser = User(1, "Martina Wolna")
+        Constants.selfUser = User(2, "Maciej Kowalski")
+
         list.addAll(getList())
         with(binding.chatRecyclerView) {
             layoutManager =
@@ -53,16 +72,25 @@ class MainActivity : AppCompatActivity() {
                         binding.sendBtn.apply {
                             isVisible = true
                             setOnClickListener {
-                                list.add(
-                                    User(
-                                        2,
-                                        "Maciej Kowalski",
-                                        s.toString(),
-                                        formatDate(),
-                                        false,
-                                        null
+                                val random = Random().nextInt(10)
+                                val msg = if (random % 2 == 0) {
+                                    Messenger(
+                                        1,
+                                        s.toString().trim(),
+                                        Constants.otherUser,
+                                        System.currentTimeMillis().toString(),
+                                        false
                                     )
-                                )
+                                } else {
+                                    Messenger(
+                                        2,
+                                        s.toString().trim(),
+                                        Constants.selfUser,
+                                        System.currentTimeMillis().toString(),
+                                        false
+                                    )
+                                }
+                                list.add(msg)
                                 adapter.notifyItemInserted(list.size)
                                 binding.chatRecyclerView.smoothScrollToPosition(list.size)
                                 binding.messageEditText.setText("")
@@ -82,64 +110,57 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getList(): List<User> {
+    private fun getList(): List<Messenger> {
         return listOf(
-            User(
+            Messenger(
                 1,
-                "Martina Wolna",
                 "I commented on Figma, I want to add some fancy icons. Do you have any icon set?",
-                formatDate(),
-                false,
-                null
+                Constants.otherUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 2,
-                "Maciej Kowalski",
                 "I am in a process of designing some. When do you need them?",
-                formatDate(),
-                false,
-                null
+                Constants.selfUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 1,
-                "Martina Wolna",
                 "Next month?",
-                formatDate(),
-                false,
-                null
+                Constants.otherUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 2,
-                "Maciej Kowalski",
                 "I am almost finish. Please give me your email, I will ZIP them and send you as son as im finish.",
-                formatDate(),
-                false,
-                null
+                Constants.selfUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 2,
-                "Maciej Kowalski",
                 "?",
-                formatDate(),
-                false,
-                null
+                Constants.selfUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 1,
-                "Martina Wolna",
                 "maciej.kowalski@email.com",
-                formatDate(),
-                false,
-                null
+                Constants.otherUser,
+                "12:00",
+                false
             ),
-            User(
+            Messenger(
                 2,
-                "Maciej Kowalski",
                 "",
-                formatDate(),
-                true,
-                R.drawable.ic_like
-            )
+                Constants.selfUser,
+                "12:00",
+                true
+            ),
         )
     }
 
